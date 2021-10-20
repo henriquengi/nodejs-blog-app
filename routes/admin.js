@@ -1,5 +1,8 @@
 const express = require('express')
 const router = express.Router()
+const mongoose = require('mongoose')
+require('../models/Category')
+const Category = mongoose.model('categories')
 
 router.get('/', (req, res) => {
     res.render('admin/index')
@@ -15,6 +18,21 @@ router.get('/categories', (req, res) => {
 
 router.get('/categories/add', (req, res) => {
     res.render('admin/addcategory')
+})
+
+router.post('/categories/new', (req, res) => {
+    const newCategory = {
+        name: req.body.name,
+        slug: req.body.slug
+    }
+
+    new Category(newCategory).save()
+    .then(() => {
+        res.redirect('/admin/categories')
+    })
+    .catch((err) => {
+        res.send('An error occurred: ' + err)
+    })
 })
 
 module.exports = router
