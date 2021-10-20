@@ -4,6 +4,21 @@ const mongoose = require('mongoose')
 const app = express()
 const admin = require('./routes/admin')
 const path = require('path')
+const session = require('express-session')
+const flash = require('connect-flash')
+
+app.use(session({
+    secret: 'nodecourse',
+    resave: true,
+    saveUninitialized: true
+}))
+app.use(flash())
+
+app.use((req, res, next) => {
+    res.locals.success_msg = req.flash('success_msg')
+    res.locals.error_msg = req.flash('error_msg')
+    next()
+})
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
