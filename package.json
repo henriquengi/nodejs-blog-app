@@ -1,5 +1,10 @@
 {
   "devDependencies": {
     "git-commit-msg-linter": "^3.2.8"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "handlebars": "^4.7.7",
+    "mongoose": "^6.0.11"
   }
 }
