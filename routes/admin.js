@@ -94,7 +94,7 @@ router.post('/category/edit', (req, res) => {
             }
 
             if (errors.length > 0) {
-                res.render('admin/editcategory', { errors: errors, category: category})
+                res.render('admin/editcategory', { errors: errors, category: category })
             } else {
 
                 category.name = req.body.name
@@ -113,6 +113,18 @@ router.post('/category/edit', (req, res) => {
         .catch(() => {
             req.flash('error_msg', 'Error updating category')
             res.redirect('/admin/category/edit/' + req.body.id)
+        })
+})
+
+router.post('/category/remove', (req, res) => {
+    Category.remove({ _id: req.body.id })
+        .then(() => {
+            req.flash('success_msg', 'Category removed')
+            res.redirect('/admin/categories')
+        })
+        .catch(() => {
+            req.flash('error_msg', 'Error deleting category')
+            res.redirect('/admin/categories')
         })
 })
 

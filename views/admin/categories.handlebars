@@ -11,11 +11,17 @@
     <div class="card-body">
       <h4>{{name}}</h4>
       <small>Slug: {{slug}}</small><br />
-      <small>Data de criação: {{date}}</small><br>
-      <a href="category/edit/{{id}}"><button
-          class="btn btn-success mt-2"
-        >Edit category</button></a>
+      <small>Data de criação: {{date}}</small><br />
+      <a href="category/edit/{{id}}"><button class="btn btn-success mt-2">Edit
+          category</button></a>
+      <form action="/admin/category/remove" method="post">
+        <input type="hidden" name="id" value="{{_id}}" />
+        <button type="submit" class="btn btn-danger mt-2">Remove</button>
+      </form>
     </div>
   </div>
+
+{{else}}
+  <h4 class="mt-4">Nothing to show</h4>
 
 {{/each}}
