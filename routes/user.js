@@ -78,8 +78,10 @@ router.post('/register', (req, res) => {
                 res.redirect('/')
             })
     }
+})
 
-
+router.get('/login', (req, res) => {
+    res.render('user/login')
 })
 
 module.exports = router
