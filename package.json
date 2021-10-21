@@ -4,6 +4,7 @@
     "nodemon": "^2.0.14"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "connect-flash": "^0.1.1",
     "express": "^4.17.1",
     "express-handlebars": "^5.3.4",
