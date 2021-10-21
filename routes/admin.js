@@ -21,18 +21,39 @@ router.get('/categories/add', (req, res) => {
 })
 
 router.post('/categories/new', (req, res) => {
-    const newCategory = {
-        name: req.body.name,
-        slug: req.body.slug
+
+    var errors = []
+
+    if (!req.body.name || req.body.name == undefined || req.body.name == null) {
+        errors.push({ text: 'Invalid name' })
     }
 
-    new Category(newCategory).save()
-    .then(() => {
-        res.redirect('/admin/categories')
-    })
-    .catch((err) => {
-        res.send('An error occurred: ' + err)
-    })
+    if (!req.body.slug || req.body.slug == undefined || req.body.slug == null) {
+        errors.push({ text: 'Invalid slug' })
+    }
+
+    if (req.body.name.length < 2) {
+        errors.push({ text: 'Category name too short' })
+    }
+
+    if (errors.length > 0) {
+        res.render('admin/addcategory', { errors: errors })
+    } else {
+        const newCategory = {
+            name: req.body.name,
+            slug: req.body.slug
+        }
+
+        new Category(newCategory).save()
+            .then(() => {
+                req.flash('success_msg', 'Category created')
+                res.redirect('/admin/categories')
+            })
+            .catch(() => {
+                req.flash('error_msgn', 'There was an error on category creation, try again')
+                res.redirect('/admin')
+            })
+    }
 })
 
 module.exports = router
