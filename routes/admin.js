@@ -223,4 +223,16 @@ router.get('/post/edit/:id', (req, res) => {
         })
 })
 
+router.get('/post/delete/:id', (req, res) => {
+    Post.remove({ _id: req.params.id })
+        .then(() => {
+            req.flash('success_msg', 'Post deleted')
+            res.redirect('/admin/posts')
+        })
+        .catch(() => {
+            req.flash('error_msg', 'Error deleting post')
+            res.redirect('/admin/posts')
+        })
+})
+
 module.exports = router
