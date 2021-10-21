@@ -4,3 +4,17 @@
 <a href="/admin/post/add">
   <button class="btn btn-success mb-4">New Post</button>
 </a>
+
+{{#each posts}}
+    <div class="card">
+        <div class="card-body">
+            <h4>{{title}}</h4>
+            <p>Description: {{description}}</p>
+            <small>Data: {{date}}</small><br>
+            <small>Category: {{category.name}}</small>
+
+        </div>
+    </div>
+{{else}}
+    <p>No post registered</p>
+{{/each}}

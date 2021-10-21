@@ -127,7 +127,14 @@ router.post('/category/remove', (req, res) => {
 })
 
 router.get('/posts', (req, res) => {
-    res.render('admin/posts')
+
+    Post.find().populate('category').sort({date: 'desc'}).then((result) => {
+        res.render('admin/posts', {posts: result})
+    }).catch(() => {
+        req.flash('error_msg', 'Error getting posts')
+        res.redirect('/admin')
+    })
+
 })
 
 router.get('/post/add', (req, res) => {
