@@ -3,6 +3,8 @@ const router = express.Router()
 const mongoose = require('mongoose')
 require('../models/Category')
 const Category = mongoose.model('categories')
+require('../models/Post')
+const Post = mongoose.model('posts')
 
 router.get('/', (req, res) => {
     res.render('admin/index')
@@ -136,6 +138,37 @@ router.get('/post/add', (req, res) => {
         req.flash('error_msg', 'Error getting categories')
         res.redirect('/admin')
     })
+})
+
+router.post('/post/new', (req, res) => {
+    let errors = []
+
+    if (req.body.category == "0") {
+        errors.push({ text: 'Invalid category' })
+    }
+
+    if (errors.length > 0) {
+        req.flash('error_msg', 'Error getting categories')
+        res.redirect('/admin/add')
+    } else {
+        const newPost = {
+            title: req.body.title,
+            description: req.body.description,
+            content: req.body.content,
+            category: req.body.category,
+            slug: req.body.slug,
+        }
+
+        new Post(newPost).save()
+            .then(() => {
+                req.flash('success_msg', 'Post created')
+                res.redirect('/admin/posts')
+            })
+            .catch(() => {
+                req.flash('error_msg', 'Error creating post')
+                res.redirect('/admin/posts/add')
+            })
+    }
 })
 
 module.exports = router
