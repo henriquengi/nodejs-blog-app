@@ -128,8 +128,8 @@ router.post('/category/remove', (req, res) => {
 
 router.get('/posts', (req, res) => {
 
-    Post.find().populate('category').sort({date: 'desc'}).then((result) => {
-        res.render('admin/posts', {posts: result})
+    Post.find().populate('category').sort({ date: 'desc' }).then((result) => {
+        res.render('admin/posts', { posts: result })
     }).catch(() => {
         req.flash('error_msg', 'Error getting posts')
         res.redirect('/admin')
@@ -160,8 +160,8 @@ router.post('/post/new', (req, res) => {
     } else {
         const newPost = {
             title: req.body.title,
-            description: req.body.description,
-            content: req.body.content,
+            desctiption: req.body.description,
+            contend: req.body.content,
             category: req.body.category,
             slug: req.body.slug,
         }
@@ -176,6 +176,51 @@ router.post('/post/new', (req, res) => {
                 res.redirect('/admin/posts/add')
             })
     }
+})
+
+router.post('/post/edit/', (req, res) => {
+
+    Post.findOne({ _id: req.body.id })
+        .then((post) => {
+            post.title = req.body.title,
+                post.slug = req.body.slug,
+                post.desctiption = req.body.desctiption,
+                post.contend = req.body.contend,
+                post.category = req.body.category
+
+            post.save()
+                .then(() => {
+                    req.flash('success_msg', 'Post edited')
+                    res.redirect('/admin/posts')
+                })
+                .catch(() => {
+                    req.flash('error_msg', 'Error saving edited post')
+                    res.redirect('/admin/posts')
+                })
+        })
+        .catch((err) => {
+            req.flash('error_msg', 'Error editing edit')
+            res.redirect('/admin/posts')
+        })
+})
+
+router.get('/post/edit/:id', (req, res) => {
+
+    Post.findOne({ _id: req.params.id })
+        .then((resultPost) => {
+            Category.find()
+                .then((resultCat) => {
+                    res.render('admin/editpost', { categories: resultCat, post: resultPost })
+                })
+                .catch(() => {
+                    req.flash('error_msg', 'Error finding categories')
+                    res.redirect('/admin/posts')
+                })
+        })
+        .catch(() => {
+            req.flash('error_msg', 'Error finding post')
+            res.redirect('/admin/posts')
+        })
 })
 
 module.exports = router
