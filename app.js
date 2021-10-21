@@ -44,18 +44,35 @@ mongoose.connect('mongodb://localhost/blogapp')
 
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.get('/', (req,res) => {
+app.get('/', (req, res) => {
     Post.find()
-    .populate('category')
-    .sort({date: 'desc'})
-    .then((result) => {
-        res.render('index', {posts: result})
-    })
-    .catch(() => {
-        req.flash('error_msg', 'Internal error')
-        res.redirect('/404')
-    })
-    
+        .populate('category')
+        .sort({ date: 'desc' })
+        .then((result) => {
+            res.render('index', { posts: result })
+        })
+        .catch(() => {
+            req.flash('error_msg', 'Internal error')
+            res.redirect('/404')
+        })
+
+})
+
+app.get('/post/:id', (req, res) => {
+    Post.findOne({ _id: req.params.id })
+        .then((result) => {
+            if (result) {
+
+                res.render('posts/index', { post: result })
+            } else {
+                req.flash('error_msg', 'Post doesnt exist')
+                res.redirect('/')
+            }
+        })
+        .catch(() => {
+            req.flash('error_msg', 'Couldnt open post, try again')
+            res.redirect('/')
+        })
 })
 
 app.use('/admin', admin)

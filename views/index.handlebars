@@ -1,4 +1,4 @@
-<div class="jumbotron mb-4">
+<div class="jumbotron mt-4">
   <h1 class="display-4">Welcome to NodeJS Blog!</h1>
   <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
   <hr class="my-4">
@@ -11,8 +11,13 @@
 
 <div class="card mb-4">
     <div class="card-body">
+        
         <h3>{{title}}</h3>
         <p>{{desctiption}}</p>
+        <a href="/post/{{_id}}"><button class="btn btn-success">Read more</button></a>
+        <hr>
+        <small>Category: {{category.name}}</small><br>
+        <small>Posted on: {{date}}</small><br><br>
     </div>
 </div>
 
