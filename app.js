@@ -3,6 +3,7 @@ const handlebars = require('express-handlebars')
 const mongoose = require('mongoose')
 const app = express()
 const admin = require('./routes/admin')
+const user = require('./routes/user')
 const path = require('path')
 const session = require('express-session')
 const flash = require('connect-flash')
@@ -78,6 +79,8 @@ app.get('/post/:id', (req, res) => {
 })
 
 app.use('/admin', admin)
+
+app.use('/user', user)
 
 app.get('/categories', (req, res) => {
     Category.find()
