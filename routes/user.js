@@ -5,6 +5,7 @@ require('../models/User')
 const User = mongoose.model('users')
 const bcrypt = require('bcryptjs')
 const passport = require('passport')
+const { route } = require('./admin')
 
 router.get('/register', (req, res) => {
     res.render('user/register')
@@ -92,6 +93,12 @@ router.post('/login', (req, res, next) => {
         failureRedirect: '/user/login',
         failureFlash: true
     })(req, res, next)
+})
+
+router.get('/logout', (req, res) => {
+    req.logout()
+    req.flash('success_msg', 'You\'ve been logged out')
+    res.redirect('/')
 })
 
 module.exports = router
