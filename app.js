@@ -11,12 +11,16 @@ require('./models/Post')
 const Post = mongoose.model('posts')
 require('./models/Category')
 const Category = mongoose.model('categories')
+const passport = require('passport')
+require('./config/auth')(passport)
 
 app.use(session({
     secret: 'nodecourse',
     resave: true,
     saveUninitialized: true
 }))
+app.use(passport.initialize())
+app.use(passport.session())
 app.use(flash())
 
 app.use((req, res, next) => {
