@@ -10,7 +10,9 @@
     "express-handlebars": "^5.3.4",
     "express-session": "^1.17.2",
     "handlebars": "^4.7.7",
-    "mongoose": "^6.0.11"
+    "mongoose": "^6.0.11",
+    "passport": "^0.5.0",
+    "passport-local": "^1.0.0"
   },
   "scripts": {
     "nodemon": "node_modules/.bin/nodemon"
