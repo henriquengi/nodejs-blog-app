@@ -8,10 +8,6 @@ router.get('/', (req, res) => {
     res.render('admin/index')
 })
 
-router.get('/posts', (req, res) => {
-    res.send('Posts page')
-})
-
 router.get('/categories', (req, res) => {
     Category.find()
         .sort({ date: 'desc' })
@@ -126,6 +122,20 @@ router.post('/category/remove', (req, res) => {
             req.flash('error_msg', 'Error deleting category')
             res.redirect('/admin/categories')
         })
+})
+
+router.get('/posts', (req, res) => {
+    res.render('admin/posts')
+})
+
+router.get('/post/add', (req, res) => {
+    Category.find().then((result) => {
+
+        res.render('admin/addpost', { categories: result })
+    }).catch(() => {
+        req.flash('error_msg', 'Error getting categories')
+        res.redirect('/admin')
+    })
 })
 
 module.exports = router
