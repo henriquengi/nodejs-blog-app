@@ -27,6 +27,7 @@ app.use((req, res, next) => {
     res.locals.success_msg = req.flash('success_msg')
     res.locals.error_msg = req.flash('error_msg')
     res.locals.error = req.flash('error')
+    res.locals.user = req.user || null
     next()
 })
 
@@ -99,12 +100,12 @@ app.get('/categories', (req, res) => {
 })
 
 app.get('/category/:slug', (req, res) => {
-    Category.findOne({slug: req.params.slug})
+    Category.findOne({ slug: req.params.slug })
         .then((result) => {
             if (result) {
                 Post.find({ category: result._id })
                     .then((posts) => {
-                        res.render('categories/posts', {posts: posts, category: result})
+                        res.render('categories/posts', { posts: posts, category: result })
                     })
                     .catch(() => {
                         req.flash('error_msg', 'Error listing posts')
