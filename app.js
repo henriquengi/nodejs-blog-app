@@ -8,6 +8,8 @@ const session = require('express-session')
 const flash = require('connect-flash')
 require('./models/Post')
 const Post = mongoose.model('posts')
+require('./models/Category')
+const Category = mongoose.model('categories')
 
 app.use(session({
     secret: 'nodecourse',
@@ -76,6 +78,41 @@ app.get('/post/:id', (req, res) => {
 })
 
 app.use('/admin', admin)
+
+app.get('/categories', (req, res) => {
+    Category.find()
+        .then((result) => {
+            res.render('categories/index', { categories: result })
+        })
+        .catch(() => {
+            req.flash('error_msg', 'Error getting categories')
+            res.redirect('/')
+        })
+})
+
+app.get('/category/:slug', (req, res) => {
+    Category.findOne({slug: req.params.slug})
+        .then((result) => {
+            if (result) {
+                Post.find({ category: result._id })
+                    .then((posts) => {
+                        res.render('categories/posts', {posts: posts, category: result})
+                    })
+                    .catch(() => {
+                        req.flash('error_msg', 'Error listing posts')
+                        res.redirect('/categories')
+                    })
+            } else {
+                req.flash('error_msg', 'Category doesnt exist')
+                res.redirect('/categories')
+            }
+        })
+        .catch((err) => {
+            console.log(err)
+            req.flash('error_msg', 'Internal error occurred trying to get categories')
+            res.redirect('/categories')
+        })
+})
 
 app.get('/404', (req, res) => {
     res.send('Erro 404!')
